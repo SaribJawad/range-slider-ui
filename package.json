@@ -1,0 +1,41 @@
+{
+  "name": "range-slider",
+  "version": "0.0.1",
+  "eslintConfig": {
+    "rules": {
+      "camelcase": "off",
+      "semi": [
+        "error",
+        "never"
+      ],
+      "indent": [
+        "error",
+        2
+      ]
+    }
+  },
+  "standardx": {
+    "global": [
+      "yourGlobalIfAny"
+    ]
+  },
+  "description": "ui component",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "budo demo/demo.js:bundle.js --open --live",
+    "build": "browserify demo/demo.js > bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standardx --fix"
+  },
+  "keywords": [
+    "range",
+    "slider"
+  ],
+  "author": "demo",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^17.0.1",
+    "budo": "^11.8.4",
+    "standardx": "^7.0.0"
+  }
+}

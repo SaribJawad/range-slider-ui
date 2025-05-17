@@ -1,1 +1,1 @@
-# range-slider-ui
+# wizard-demo
