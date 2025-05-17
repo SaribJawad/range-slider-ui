@@ -105,7 +105,6 @@ function get_theme () {
     input:active + .bar .fill {
       background-color : var(--blue);
     }
-
     input::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 16px;
@@ -120,7 +119,6 @@ function get_theme () {
     input::-webkit-slider-thumb:hover {
       box-shadow: 0 0 0 14px rgba(94, 176, 245, .8);
     }
-    
     input::-moz-range-thumb {
       width: 16px;
       height: 16px;
