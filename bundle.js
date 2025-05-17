@@ -1,68 +1,82 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-const range_slider = require('../src')
+(function () { function r (e, n, t) { function o (i, f) { if (!n[i]) { if (!e[i]) { const c = typeof require === 'function' && require; if (!f && c) return c(i, !0); if (u) return u(i, !0); const a = new Error("Cannot find module '" + i + "'"); throw a.code = 'MODULE_NOT_FOUND', a } const p = n[i] = { exports: {} }; e[i][0].call(p.exports, function (r) { const n = e[i][1][r]; return o(n || r) }, p, p.exports, r, e, n, t) } return n[i].exports } for (var u = typeof require === 'function' && require, i = 0; i < t.length; i++)o(t[i]); return o } return r })()({
+  1: [function (require, module, exports) {
+    const range_slider = require('../src')
 
-const range = range_slider({ min: 0, max: 10 })
-document.body.innerHTML = '<h1> range slider </h1>'
+    const range = range_slider({ min: 0, max: 10 })
+    document.body.innerHTML = '<h1> range slider </h1>'
 
-const main = document.createElement('div')
-main.classList.add('demo')
+    const main = document.createElement('div')
+    main.classList.add('demo')
 
-const style = document.createElement('style')
-style.textContent = `
+    const style = document.createElement('style')
+    style.textContent = `
   .demo { 
     padding : 50px;
   }
 `
 
-main.append(range)
-document.body.append(style, main)
+    main.append(range)
+    document.body.append(style, main)
+  }, { '../src': 2 }],
+  2: [function (require, module, exports) {
+    module.exports = range_slider
 
-},{"../src":2}],2:[function(require,module,exports){
-module.exports = range_slider
+    let id = 0
 
-function range_slider (opts) {
-  const { min = 0, max = 1000 } = opts
+    function range_slider (opts, protocol) {
+      const { min = 0, max = 1000 } = opts
+      const name = `range-${id++}`
 
-  const el = document.createElement('div')
-  el.classList.add('container')
+      const notify = protocol({ from: name }, listen)
+      function listen (message) {
+        const { type, data } = message
+        if (type === 'update') {
+          input.value = data
+          fill.style.width = `${(data / max) * 100}%`
+          input.focus()
+        }
+      }
 
-  const shadow = el.attachShadow({ mode: 'closed' })
+      const el = document.createElement('div')
+      el.classList.add('container')
 
-  const input = document.createElement('input')
-  input.type = 'range'
-  input.min = min
-  input.max = max
-  input.value = min
+      const shadow = el.attachShadow({ mode: 'closed' })
 
-  input.oninput = handle_input
+      const input = document.createElement('input')
+      input.type = 'range'
+      input.min = min
+      input.max = max
+      input.value = min
 
-  const bar = document.createElement('div')
-  bar.classList.add('bar')
+      input.oninput = handle_input
 
-  const ruler = document.createElement('div')
-  ruler.classList.add('ruler')
+      const bar = document.createElement('div')
+      bar.classList.add('bar')
 
-  const fill = document.createElement('div')
-  fill.classList.add('fill')
+      const ruler = document.createElement('div')
+      ruler.classList.add('ruler')
 
-  bar.append(ruler, fill)
+      const fill = document.createElement('div')
+      fill.classList.add('fill')
 
-  const style = document.createElement('style')
-  style.textContent = get_theme()
+      bar.append(ruler, fill)
 
-  shadow.append(style, input, bar)
-  return el
+      const style = document.createElement('style')
+      style.textContent = get_theme()
 
-  // handler
-  function handle_input (e) {
-    const value = Number(e.target.value)
+      shadow.append(style, input, bar)
+      return el
 
-    fill.style.width = `${(value / max) * 100}%`
-  }
-}
+      // handler
+      function handle_input (e) {
+        const value = Number(e.target.value)
+        fill.style.width = `${(value / max) * 100}%`
+        notify({ from: name, type: 'update', data: value })
+      }
+    }
 
-function get_theme () {
-  return `
+    function get_theme () {
+      return `
     :host {
       box-sizing : border-box
     }
@@ -151,6 +165,6 @@ function get_theme () {
     input::-moz-range-thumb:hover {
       box-shadow: 0 0 0 14px rgba(94, 176, 245, .8);
     }`
-}
-
-},{}]},{},[1]);
+    }
+  }, {}]
+}, {}, [1])
